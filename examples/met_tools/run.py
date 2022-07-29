@@ -3,7 +3,7 @@ sys.path.append('..')
 from melodies_monet import driver
 
 an = driver.analysis()
-an.control = 'airnow_chem.yaml'
+an.control = 'airnow_wrfchem.yaml'
 an.read_control()
 an.control_dict
 
