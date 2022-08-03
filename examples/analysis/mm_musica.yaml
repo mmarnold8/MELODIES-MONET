@@ -1,0 +1,22 @@
+analysis:
+  start_time: '2019-07-01-00:00:00' #UTC
+  end_time:   '2019-07-05-18:00:00' #UTC
+  output_dir: /Users/fillmore/Data/MUSICA/melodies_monet_output
+  debug: True
+
+
+model:
+  MUSICA:
+    files: /Users/fillmore/Data/MUSICA/f.e22.FCnudged.CONUSne30x8.cesm220.ts13.001/f.e22.FCnudged.CONUSne30x8.cesm220.ts13.001.cam.h3.*
+    mod_type: 'cesm_se'
+    scrip_file: /Users/fillmore/Data/MUSICA/grids/ne0CONUSne30x8/ne0CONUS_ne30x8_np4_SCRIP.nc
+    radius_of_influence: 12000 # meters
+    mapping: # model species name : obs species name
+      AirNow:
+        PM25_SRF: 'PM2.5'
+        O3_SRF: 'OZONE'
+    projection: None
+    plot_kwargs:
+      color: 'magenta'
+      marker: 's'
+      linestyle: '-'
