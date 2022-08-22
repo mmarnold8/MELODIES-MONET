@@ -1,5 +1,14 @@
+import os
 import sys
-sys.path.append('..')
+melodies_dir = os.path.join(
+    os.getenv('HOME'), 'EarthSystem', 'MELODIES-MONET')
+monet_dir = os.path.join(
+    os.getenv('HOME'), 'EarthSystem', 'monet')
+monetio_dir = os.path.join(
+    os.getenv('HOME'), 'EarthSystem', 'monetio')
+sys.path.insert(0, melodies_dir)
+sys.path.insert(0, monet_dir)
+sys.path.insert(0, monetio_dir)
 from melodies_monet import driver
 import warnings
 warnings.filterwarnings('ignore')
