@@ -7,8 +7,8 @@ import xarray as xr
 import monetio as mio
 
 from datetime import datetime
-
 from melodies_monet.util import write_util
+
 
 if __name__ == '__main__':
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     logging.basicConfig(stream=args.logfile, level=logging_level)
     logging.info(args.datadir)
 
-    dates = pd.date_range(start=args.start, end=args.end ,freq='d')
+    dates = pd.date_range(start=args.start, end=args.end, freq='d')
     logging.debug(dates)
     datestrs = [date.strftime('%Y%m%d') for date in dates]
     logging.debug(datestrs)
