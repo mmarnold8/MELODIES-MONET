@@ -27,7 +27,7 @@ model:
 obs:
   AirNow:
     use_airnow: True
-    filename: /glade/p/acom/acom-da/rkumar/firex_aq/YYYYMDD/epa_obs
+    filename: /glade/p/acom/acom-da/rkumar/firex_aq/epa_obs
     mod_type: 'wrfchem'
     obs_type: pt_sfc
     drop_unused_vars: True
