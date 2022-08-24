@@ -39,9 +39,9 @@ if __name__ == '__main__':
     logging.basicConfig(stream=args.logfile, level=logging_level)
     logging.info(args.datadir)
 
-    dates = pd.date_range(start=args.start, end=args.end, freq='d')
-    logging.debug(dates)
-    datestrs = [date.strftime('%Y%m%d') for date in dates]
-    logging.debug(datestrs)
+    dates_daily = pd.date_range(start=args.start, end=args.end, freq='d')
+    logging.debug(dates_daily)
+    datestrs_daily = [date.strftime('%Y%m%d') for date in dates_daily]
+    logging.debug(datestrs_daily)
 
 
