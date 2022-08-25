@@ -52,10 +52,24 @@ if __name__ == '__main__':
     Fetch AirNow data from AWS
     """
     df = mio.airnow.add_data(dates_daily, wide_fmt=False)
-    logging.info(df.columns)
+    logging.info(df.info())
 
-    # drop all values without an assigned latitude and longitude
     df = df.dropna(subset=['latitude', 'longitude']).rename(
         {'siteid': 'x'}, axis=1)
-    logging.info(df.columns)
+    logging.info(df.info())
+
+    dfp = df.pivot_table(
+        values='obs', index=['time', 'x'], columns=['variable'])
+    logging.info(dfp.info())
+
+    dfsite = df.drop(
+        ['time', 'variable', 'obs'], axis=1).drop_duplicates(
+         subset=['x']).set_index('x')
+    logging.info(dfsite.info())
+
+    """
+    Create xarray Dataset
+    """
+    dfx = xr.merge([dfp.to_xarray(), dfsite.to_xarray()])
+    logging.info(dfx)
 
