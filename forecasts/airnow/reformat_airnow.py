@@ -54,3 +54,8 @@ if __name__ == '__main__':
     df = mio.airnow.add_data(dates_daily, wide_fmt=False)
     logging.info(df.columns)
 
+    # drop all values without an assigned latitude and longitude
+    df = df.dropna(subset=['latitude', 'longitude']).rename(
+        {'siteid': 'x'}, axis=1)
+    logging.info(df.columns)
+
