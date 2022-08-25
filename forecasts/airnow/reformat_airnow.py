@@ -73,3 +73,11 @@ if __name__ == '__main__':
     dfx = xr.merge([dfp.to_xarray(), dfsite.to_xarray()])
     logging.info(dfx)
 
+    dfx['siteid'] = (('x'), dfx.x.values)
+    dfx['x'] = range(len(dfx.x))
+    dfx = dfx.expand_dims('y').set_coords(
+        ['siteid', 'latitude', 'longitude']).transpose('time', 'y', 'x')
+    logging.info(dfx)
+
+    # write_util.write_ncf(dfx, filename)
+
