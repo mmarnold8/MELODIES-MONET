@@ -9,6 +9,9 @@ import monetio as mio
 from datetime import datetime
 from melodies_monet.util import write_util
 
+import warnings
+warnings.filterwarnings('ignore')
+
 
 if __name__ == '__main__':
 
@@ -40,8 +43,14 @@ if __name__ == '__main__':
     logging.info(args.datadir)
 
     dates_daily = pd.date_range(start=args.start, end=args.end, freq='d')
+    dates_hourly = pd.date_range(start=args.start, end=args.end, freq='H')
     logging.debug(dates_daily)
     datestrs_daily = [date.strftime('%Y%m%d') for date in dates_daily]
     logging.debug(datestrs_daily)
 
+    """
+    Fetch AirNow data from AWS
+    """
+    df = mio.airnow.add_data(dates_daily, wide_fmt=False)
+    logging.info(df.columns)
 
