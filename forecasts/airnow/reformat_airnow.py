@@ -83,6 +83,6 @@ if __name__ == '__main__':
 
     filename = os.path.join(args.datadir,
         'AirNow_' + args.start + '_' + args.end + '.nc')
-    dfx.to_netcdf(filename)
-    # write_util.write_ncf(dfx, filename)
+    # dfx.to_netcdf(filename)
+    write_util.write_ncf(dfx, filename)
 
