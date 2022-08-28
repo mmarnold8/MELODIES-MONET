@@ -1,5 +1,5 @@
 import sys
-sys.path.append('..')
+sys.path.append('../..')
 from melodies_monet import driver
 import warnings
 warnings.filterwarnings('ignore')
