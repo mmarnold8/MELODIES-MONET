@@ -1,5 +1,7 @@
 import os
 import sys
+sys.path.append('../..')
+
 import argparse
 import logging
 import pandas as pd
@@ -20,8 +22,8 @@ if __name__ == '__main__':
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str,
-        default=os.path.join(os.getenv('HOME'), 'Data'),
-        help='top-level data directory (default $HOME/Data)')
+        default=os.path.join(os.getenv('HOME'), 'Data', 'AirNow'),
+        help='top-level data directory (default $HOME/Data/AirNow)')
     parser.add_argument('--logfile', type=str,
         default=sys.stdout,
         help='log file (default stdout)')
@@ -79,5 +81,8 @@ if __name__ == '__main__':
         ['siteid', 'latitude', 'longitude']).transpose('time', 'y', 'x')
     logging.info(dfx)
 
+    filename = os.path.join(args.datadir,
+        'AirNow_' + args.start + '_' + args.end + '.nc')
+    dfx.to_netcdf(filename)
     # write_util.write_ncf(dfx, filename)
 
