@@ -1,24 +1,32 @@
 import sys
 sys.path.append('../..')
+
+from datetime import datetime
 from melodies_monet import driver
+
 import warnings
 warnings.filterwarnings('ignore')
 
 an = driver.analysis()
 an.control = 'wrfchem.yaml'
 an.read_control()
-an.control_dict
 
-an.open_models()
-an.models
+today_str = datetime.now().strftime('%Y%m%d')
+an.control_dict['analysis']['start_time'].replace('today', today_str)
+an.control_dict['analysis']['end_time'].replace('today', today_str)
 
-an.open_obs()
+print(an.control_dict)
 
-an.pair_data()
+# an.open_models()
+# an.models
 
-for obs in an.obs:
-    print(an.obs[obs])
-    print(an.obs[obs].obj.info())
-    print(an.obs[obs].obj.memory_usage())
+# an.open_obs()
+
+# an.pair_data()
+
+# for obs in an.obs:
+#     print(an.obs[obs])
+#     print(an.obs[obs].obj.info())
+#     print(an.obs[obs].obj.memory_usage())
 
 # an.plotting()
