@@ -12,8 +12,10 @@ an.control = 'wrfchem.yaml'
 an.read_control()
 
 today_str = datetime.now().strftime('%Y%m%d')
-an.control_dict['analysis']['start_time'].replace('today', today_str)
-an.control_dict['analysis']['end_time'].replace('today', today_str)
+an.control_dict['analysis']['start_time'] \
+    = an.control_dict['analysis']['start_time'].replace('today', today_str)
+an.control_dict['analysis']['end_time'] \
+    = an.control_dict['analysis']['end_time'].replace('today', today_str)
 
 print(an.control_dict)
 
