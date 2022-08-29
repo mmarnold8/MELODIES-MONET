@@ -8,7 +8,7 @@ analysis:
 model:
   # Regional Atmospheric Chemistry Model/Earth System Research Lab
   WRF-Chem:
-    files: '/glade/p/acom/acom-da/rkumar/firex_aq/YYYYMMDD/wrf/wrfout_hourly_d01_YYYY-MM-DD_HH:00:00'
+    files: '/glade/p/acom/acom-da/rkumar/firex_aq/YYYYMMDD/wrf/wrfout_hourly_d01_YYYY-MM-DD_*'
     mod_type: 'wrfchem'
     mod_kwargs:
       mech: 'racm_esrl_vcp'
