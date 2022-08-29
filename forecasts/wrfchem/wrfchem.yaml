@@ -1,7 +1,7 @@
 analysis:
-  start_time:
-  end_time:
-  output_dir:
+  start_time: today
+  end_time: today
+  output_dir: $HOME/Data/forecasts/WRFChem
   debug: True
 
 
