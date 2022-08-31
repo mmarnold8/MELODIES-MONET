@@ -1,11 +1,11 @@
 analysis:
-  start_time: '2019-07-01-00:00:00' #UTC
-  end_time:   '2019-07-31-18:00:00' #UTC
+  start_time: '2019-01'
+  end_time:   '2019-12'
   output_dir: $HOME/CARMA
   debug: True
 
 
 model:
-  MUSICA:
-    files:/glade/campaign/acom/acom-climate/tilmes/CARMA/FCnudged_f09.mam.mar27.2000_2021.001
-  scrip_file:
+  CARMA:
+    # files:/glade/campaign/acom/acom-climate/tilmes/CARMA/...
+    files:$HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist/*h0*nc
