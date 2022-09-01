@@ -2,10 +2,11 @@ analysis:
   start_time: '2019-01'
   end_time:   '2019-12'
   output_dir: $HOME/CARMA
-  debug: True
-
 
 model:
   CARMA:
-    # files:/glade/campaign/acom/acom-climate/tilmes/CARMA/...
-    files:$HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist/*h0*nc
+    # files: /glade/campaign/acom/acom-climate/tilmes/CARMA/...
+    files: $HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist/*h0*nc
+    mapping:
+      MOD08_M3:
+
