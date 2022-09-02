@@ -5,7 +5,7 @@ analysis:
 
 obs:
   MOD08_M3:
-    files: $HOME/Data/MOD08_M3/MOD08_M3/*hdf
+    files: $HOME/Data/MOD08_M3/MOD08_M3*hdf
 
 model:
   MAM4:
