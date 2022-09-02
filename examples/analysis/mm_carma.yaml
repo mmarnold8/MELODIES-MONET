@@ -4,7 +4,7 @@ analysis:
   output_dir: $HOME/CARMA
 
 model:
-  CARMA:
+  MAM4:
     # files: /glade/campaign/acom/acom-climate/tilmes/CARMA/...
     files: $HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist/*h0*nc
     mapping:
