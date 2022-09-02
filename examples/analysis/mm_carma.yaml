@@ -3,6 +3,10 @@ analysis:
   end_time:   '2019-12'
   output_dir: $HOME/CARMA
 
+obs:
+  MOD08_M3:
+    files: $HOME/Data/MOD08_M3/MOD08_M3/*hdf
+
 model:
   MAM4:
     # files: /glade/campaign/acom/acom-climate/tilmes/CARMA/...
