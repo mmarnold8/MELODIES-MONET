@@ -8,9 +8,15 @@ obs:
     files: $HOME/Data/MOD08_M3/MOD08_M3*hdf
 
 model:
-  MAM4:
+  MAM3:
     # files: /glade/campaign/acom/acom-climate/tilmes/CARMA/...
     files: $HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist/*h0*nc
+    combine:
+      AOD_550:
+        - AODdnMODE1
+        - AODdnMODE2
+        - AODdnMODE3
     mapping:
       MOD08_M3:
+        AOD: AOD_550_Dark_Target_Deep_Blue_Combined_Mean_Mean
 
