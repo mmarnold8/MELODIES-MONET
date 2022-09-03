@@ -1,6 +1,8 @@
 import os
 import sys
 import yaml
+import pandas as pd
+import xarray as xr
 
 from glob import glob
 
@@ -19,6 +21,13 @@ warnings.filterwarnings('ignore')
 
 
 def process(config):
+
+    start_time = config['analysis']['start_time']
+    end_time = config['analysis']['end_time']
+    freq = config['analysis']['freq']
+
+    dates = pd.date_range(start=start_time, end=end_time, freq=freq)
+    print(dates)
 
     for obs in config['obs']:
 
