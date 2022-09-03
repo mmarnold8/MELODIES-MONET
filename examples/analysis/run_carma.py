@@ -18,7 +18,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def read_obs(config):
+def process(config):
 
     for obs in config['obs']:
 
@@ -32,27 +32,14 @@ def read_obs(config):
             hdf_close(f)
 
 
-def read_model(config):
-
-    for model in config['model']:
-
-        files = sorted(
-            glob(os.path.expandvars(config['model'][model]['files'])))
-
-        for filename in files:
-            print(filename)
-
-
 
 if __name__ == '__main__':
 
-    config_file = 'mm_carma.yaml'
+    config_file = 'carma.yaml'
 
     with open(config_file, 'r') as f:
         config = yaml.safe_load(f)
 
-    print(config)
-
-    read_obs(config)
+    process(config)
 
 
