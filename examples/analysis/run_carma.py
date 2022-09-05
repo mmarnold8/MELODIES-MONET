@@ -27,19 +27,20 @@ def process(config):
     freq = config['analysis']['freq']
 
     dates = pd.date_range(start=start_time, end=end_time, freq=freq)
-    print(dates)
 
-    for obs in config['obs']:
+    for date in dates:
+        print(date)
 
-        files = sorted(
-            glob(os.path.expandvars(config['obs'][obs]['files'])))
+        for obs in config['obs']:
+            print(obs)
 
-        for filename in files:
+            """
+            filename = ''
             print(filename)
             f = hdf_open(filename)
             datasets, indices = hdf_list(f)
             hdf_close(f)
-
+            """
 
 
 if __name__ == '__main__':

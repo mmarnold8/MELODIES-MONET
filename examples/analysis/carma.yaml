@@ -6,12 +6,13 @@ analysis:
 
 obs:
   MOD08_M3:
-    files: $HOME/Data/MOD08_M3/MOD08_M3*hdf
+    files: $HOME/Data/MOD08_M3/MOD08_M3.AYYYYDDD.061.*.hdf
 
 model:
   MAM3:
     # files: /glade/campaign/acom/acom-climate/tilmes/CARMA/...
-    files: $HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist/*h0*nc
+    histdir: $HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist
+    filestr: FCnudged_f09.mam.mar27.2000_2021.001.cam.h0.YYYY-MM.nc
     combine:
       AOD_550:
         - AODdnMODE1
