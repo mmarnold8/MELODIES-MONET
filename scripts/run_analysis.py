@@ -76,7 +76,7 @@ def process(config):
 
 if __name__ == '__main__':
 
-    config_file = 'carma.yaml'
+    config_file = '../examples/analysis/carma.yaml'
 
     with open(config_file, 'r') as f:
         config = yaml.safe_load(f)
