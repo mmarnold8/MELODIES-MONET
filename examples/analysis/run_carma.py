@@ -20,6 +20,18 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
+def fill_date_template(template_str, datestr, datestr_jday):
+    yyyy_str, mm_str, dd_str = tuple(datestr.split('-'))
+    yyyy_str, ddd_str = tuple(datestr_jday.split('-'))
+
+    if 'DDD' in template_str:
+        return template_str.replace(
+            'YYYY', yyyy_str).replace('DDD', ddd_str)
+    else:
+        return template_str.replace(
+            'YYYY', yyyy_str).replace('MM', mm_str).replace('DD', dd_str)
+
+
 def process(config):
 
     start_time = config['analysis']['start_time']
@@ -28,26 +40,29 @@ def process(config):
 
     dates = pd.date_range(
         start=start_time, end=end_time, freq=freq)
-    datestrs_monthly = [date.strftime('%Y-%m') for date in dates]
-    datestrs_monthly_jday = [date.strftime('%Y%j') for date in dates]
+    datestrs = [date.strftime('%Y-%m-%d') for date in dates]
+    datestrs_jday = [date.strftime('%Y-%j') for date in dates]
 
     for date, datestr, datestr_jday \
-        in zip(dates, datestrs_monthly, datestrs_monthly_jday):
+        in zip(dates, datestrs, datestrs_jday):
 
         for model in config['model']:
-            histdir = config['model'][model]['histdir']
+            datadir = config['model'][model]['datadir']
             filestr = config['model'][model]['filestr']
-            filestr = filestr.replace('YYYY-MM', datestr)
+            filestr = fill_date_template(
+                config['model'][model]['filestr'], datestr, datestr_jday)
             files = glob(
-                os.path.join(os.path.expandvars(histdir), filestr))
+                os.path.join(os.path.expandvars(datadir), filestr))
             print(files)
 
             mapping = config['model'][model]['mapping']
 
             for obs in mapping:
-                filestr = config['obs'][obs]['filestr']
-                filestr = filestr.replace('YYYYDDD', datestr_jday)
-                files = glob(os.path.expandvars(filestr))
+                datadir = config['obs'][obs]['datadir']
+                filestr = fill_date_template(
+                    config['obs'][obs]['filestr'], datestr, datestr_jday)
+                files = glob(
+                    os.path.join(os.path.expandvars(datadir), filestr))
                 print(files)
 
             """
