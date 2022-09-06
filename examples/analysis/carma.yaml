@@ -8,6 +8,11 @@ obs:
   MOD08_M3:
     datadir: $HOME/Data/MOD08_M3
     filestr: MOD08_M3.AYYYYDDD.061.*.hdf
+    variables:
+        AOD_550_Dark_Target_Deep_Blue_Combined_Mean_Mean:
+            fillvalue: -9999
+            scale: 0.01
+            units: none
 
 model:
   MAM3:

@@ -28,15 +28,31 @@ def fill_date_template(template_str, date_str):
 
 def read_mod08_m3(filename, var_list):
 
+    ds_dict = dict()
+
     logging.info('read_mod08_m3:' + filename)
     f = hdf_open(filename)
     datasets, indices = hdf_list(f)
+
     lon = hdf_read(f, 'XDim')
     lat = hdf_read(f, 'YDim')
+    lon_da = xr.DataArray(lon,
+        attrs={'longname': 'longitude', 'units': 'deg East'})
+    lat_da = xr.DataArray(lat,
+        attrs={'longname': 'latitude', 'units': 'deg North'})
+
     for var in var_list:
         logging.info('read_mod08_m3:' + var)
         data = hdf_read(f, var)
+        var_da = xr.DataArray(
+            data, coords=[lat_da, lon_da],
+            dims=['lat', 'lon'])
+        ds_dict[var] = var_da
+
     hdf_close(f)
+
+    ds = xr.Dataset(ds_dict)
+    ds.to_netcdf(filename.replace('.hdf', '.nc'))
 
 
 def process(config):
@@ -71,13 +87,15 @@ def process(config):
                 files = glob(
                     os.path.join(os.path.expandvars(datadir), filestr))
                 logging.info(files)
+                obs_vars = config['obs'][obs]['variables']
 
-                obs_list = list()
+                obs_vars_subset = dict()
                 for model_var in mapping[obs]:
-                    obs_list.append(mapping[obs][model_var])
+                    obs_var = mapping[obs][model_var]
+                    obs_vars_subset[obs_var] = obs_vars[obs_var]
                 for filename in files:
                     if obs == 'MOD08_M3':
-                        read_mod08_m3(filename, obs_list)
+                        read_mod08_m3(filename, obs_vars_subset)
 
 
 if __name__ == '__main__':
