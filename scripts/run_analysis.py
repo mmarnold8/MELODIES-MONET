@@ -70,46 +70,55 @@ def process(config):
 
     dates = pd.date_range(
         start=start_time, end=end_time, freq=freq)
-    date_strs = [date.strftime('%Y-%m-%d-%j') for date in dates]
 
-    for date, date_str in zip(dates, date_strs):
+    for date in dates:
+        process_date(config, date)
 
-        logging.info(date)
 
-        for model in config['model']:
-            datadir = config['model'][model]['datadir']
-            filestr = config['model'][model]['filestr']
+def process_date(config, date):
+
+    logging.info(date)
+    date_str = date.strftime('%Y-%m-%d-%j')
+
+    read_datasets(config, date_str)
+
+
+def read_datasets(config, date_str):
+
+    for model in config['model']:
+        datadir = config['model'][model]['datadir']
+        filestr = config['model'][model]['filestr']
+        filestr = fill_date_template(
+            config['model'][model]['filestr'], date_str)
+        files = glob(
+            os.path.join(os.path.expandvars(datadir), filestr))
+        logging.info(files)
+
+        filename = files[0]
+        ds_model = xr.open_dataset(filename)
+
+        mapping = config['model'][model]['mapping']
+
+        for obs in mapping:
+            datadir = config['obs'][obs]['datadir']
             filestr = fill_date_template(
-                config['model'][model]['filestr'], date_str)
+                config['obs'][obs]['filestr'], date_str)
             files = glob(
                 os.path.join(os.path.expandvars(datadir), filestr))
             logging.info(files)
+            obs_vars = config['obs'][obs]['variables']
 
+            obs_vars_subset = dict()
+            for model_var in mapping[obs]:
+                obs_var = mapping[obs][model_var]
+                obs_vars_subset[obs_var] = obs_vars[obs_var]
             filename = files[0]
-            ds_model = xr.open_dataset(filename)
-
-            mapping = config['model'][model]['mapping']
-
-            for obs in mapping:
-                datadir = config['obs'][obs]['datadir']
-                filestr = fill_date_template(
-                    config['obs'][obs]['filestr'], date_str)
-                files = glob(
-                    os.path.join(os.path.expandvars(datadir), filestr))
-                logging.info(files)
-                obs_vars = config['obs'][obs]['variables']
-
-                obs_vars_subset = dict()
-                for model_var in mapping[obs]:
-                    obs_var = mapping[obs][model_var]
-                    obs_vars_subset[obs_var] = obs_vars[obs_var]
-                filename = files[0]
-                file_extension = os.path.splitext(filename)[1]
-                if obs == 'MOD08_M3':
-                    if file_extension == '.hdf':
-                        ds_obs = read_mod08_m3(filename, obs_vars_subset)
-                    else:
-                        ds_obs = xr.open_dataset(filename)
+            file_extension = os.path.splitext(filename)[1]
+            if obs == 'MOD08_M3':
+                if file_extension == '.hdf':
+                    ds_obs = read_mod08_m3(filename, obs_vars_subset)
+                else:
+                    ds_obs = xr.open_dataset(filename)
 
 
 if __name__ == '__main__':
