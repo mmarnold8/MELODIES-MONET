@@ -2,22 +2,21 @@ import os
 import sys
 sys.path.insert(0, '../../monetio')
 sys.path.insert(0, '../../monet')
-
+import argparse
+import logging
 import yaml
 import pandas as pd
 import xarray as xr
 from glob import glob
-
 import monetio
 from monetio.sat.hdfio import hdf_open, hdf_close, hdf_list, hdf_read
-
 import warnings
 warnings.filterwarnings('ignore')
 
 
-def fill_date_template(template_str, datestr, datestr_jday):
-    yyyy_str, mm_str, dd_str = tuple(datestr.split('-'))
-    yyyy_str, ddd_str = tuple(datestr_jday.split('-'))
+def fill_date_template(template_str, date_str):
+
+    yyyy_str, mm_str, dd_str, ddd_str = tuple(date_str.split('-'))
 
     if 'DDD' in template_str:
         return template_str.replace(
@@ -35,30 +34,30 @@ def process(config):
 
     dates = pd.date_range(
         start=start_time, end=end_time, freq=freq)
-    datestrs = [date.strftime('%Y-%m-%d') for date in dates]
-    datestrs_jday = [date.strftime('%Y-%j') for date in dates]
+    date_strs = [date.strftime('%Y-%m-%d-%j') for date in dates]
 
-    for date, datestr, datestr_jday \
-        in zip(dates, datestrs, datestrs_jday):
+    for date, date_str in zip(dates, date_strs):
+
+        logging.info(date)
 
         for model in config['model']:
             datadir = config['model'][model]['datadir']
             filestr = config['model'][model]['filestr']
             filestr = fill_date_template(
-                config['model'][model]['filestr'], datestr, datestr_jday)
+                config['model'][model]['filestr'], date_str)
             files = glob(
                 os.path.join(os.path.expandvars(datadir), filestr))
-            print(files)
+            logging.info(files)
 
             mapping = config['model'][model]['mapping']
 
             for obs in mapping:
                 datadir = config['obs'][obs]['datadir']
                 filestr = fill_date_template(
-                    config['obs'][obs]['filestr'], datestr, datestr_jday)
+                    config['obs'][obs]['filestr'], date_str)
                 files = glob(
                     os.path.join(os.path.expandvars(datadir), filestr))
-                print(files)
+                logging.info(files)
 
             """
             filename = ''
@@ -71,11 +70,27 @@ def process(config):
 
 if __name__ == '__main__':
 
+    """
+    Parse command line arguments
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--logfile', type=str,
+        default=sys.stdout,
+        help='log file (default stdout)')
+    parser.add_argument('--debug', action='store_true',
+        help='set logging level to debug')
+    args = parser.parse_args()
+
+    """
+    Setup logging
+    """
+    logging_level = logging.DEBUG if args.debug else logging.INFO
+    logging.basicConfig(stream=args.logfile, level=logging_level)
+
     config_file = '../examples/analysis/carma.yaml'
 
     with open(config_file, 'r') as f:
         config = yaml.safe_load(f)
 
     process(config)
-
 
