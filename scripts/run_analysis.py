@@ -26,6 +26,14 @@ def fill_date_template(template_str, date_str):
             'YYYY', yyyy_str).replace('MM', mm_str).replace('DD', dd_str)
 
 
+def read_hdf(filename, var_list):
+
+    logging.info(filename)
+    f = hdf_open(filename)
+    datasets, indices = hdf_list(f)
+    hdf_close(f)
+
+
 def process(config):
 
     start_time = config['analysis']['start_time']
@@ -58,14 +66,8 @@ def process(config):
                 files = glob(
                     os.path.join(os.path.expandvars(datadir), filestr))
                 logging.info(files)
-
-            """
-            filename = ''
-            print(filename)
-            f = hdf_open(filename)
-            datasets, indices = hdf_list(f)
-            hdf_close(f)
-            """
+                for filename in files:
+                    read_hdf(filename, [])
 
 
 if __name__ == '__main__':
