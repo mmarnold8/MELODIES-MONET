@@ -85,6 +85,9 @@ def process(config):
                 os.path.join(os.path.expandvars(datadir), filestr))
             logging.info(files)
 
+            filename = files[0]
+            ds_model = xr.open_dataset(filename)
+
             mapping = config['model'][model]['mapping']
 
             for obs in mapping:
@@ -100,13 +103,13 @@ def process(config):
                 for model_var in mapping[obs]:
                     obs_var = mapping[obs][model_var]
                     obs_vars_subset[obs_var] = obs_vars[obs_var]
-                for filename in files:
-                    file_extension = os.path.splitext(filename)[1]
-                    if obs == 'MOD08_M3':
-                        if file_extension == '.hdf':
-                            ds_obs = read_mod08_m3(filename, obs_vars_subset)
-                        else:
-                            ds_obs = xr.open_dataset(filename)
+                filename = files[0]
+                file_extension = os.path.splitext(filename)[1]
+                if obs == 'MOD08_M3':
+                    if file_extension == '.hdf':
+                        ds_obs = read_mod08_m3(filename, obs_vars_subset)
+                    else:
+                        ds_obs = xr.open_dataset(filename)
 
 
 if __name__ == '__main__':
