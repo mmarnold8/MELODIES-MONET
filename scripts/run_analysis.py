@@ -1,17 +1,12 @@
 import os
 import sys
+sys.path.insert(0, '../../monetio')
+sys.path.insert(0, '../../monet')
+
 import yaml
 import pandas as pd
 import xarray as xr
-
 from glob import glob
-
-monet_dir = os.path.join(
-    os.getenv('HOME'), 'EarthSystem', 'monet')
-monetio_dir = os.path.join(
-    os.getenv('HOME'), 'EarthSystem', 'monetio')
-sys.path.insert(0, monet_dir)
-sys.path.insert(0, monetio_dir)
 
 import monetio
 from monetio.sat.hdfio import hdf_open, hdf_close, hdf_list, hdf_read
