@@ -26,13 +26,18 @@ def process(config):
     end_time = config['analysis']['end_time']
     freq = config['analysis']['freq']
 
-    dates = pd.date_range(start=start_time, end=end_time, freq=freq)
+    dates = pd.date_range(
+        start=start_time, end=end_time, freq=freq)
+    datestrs_monthly = [date.strftime('%Y-%m') for date in dates]
+    datestrs_monthly_jday = [date.strftime('%Y%j') for date in dates]
 
-    for date in dates:
-        print(date)
+    for date, datestr, datestr_jday \
+        in zip(dates, datestrs_monthly, datestrs_monthly_jday):
 
-        for obs in config['obs']:
-            print(obs)
+        for model in config['model']:
+            filestr = config['model'][model]['filestr']
+            filestr = filestr.replace('YYYY-MM', datestr)
+            print(filestr, datestr_jday)
 
             """
             filename = ''
