@@ -5,6 +5,7 @@ sys.path.insert(0, '../../monet')
 import argparse
 import logging
 import yaml
+import numpy as np
 import pandas as pd
 import xarray as xr
 from glob import glob
@@ -26,7 +27,7 @@ def fill_date_template(template_str, date_str):
             'YYYY', yyyy_str).replace('MM', mm_str).replace('DD', dd_str)
 
 
-def read_mod08_m3(filename, var_list):
+def read_mod08_m3(filename, var_dict):
 
     ds_dict = dict()
 
@@ -41,9 +42,10 @@ def read_mod08_m3(filename, var_list):
     lat_da = xr.DataArray(lat,
         attrs={'longname': 'latitude', 'units': 'deg North'})
 
-    for var in var_list:
+    for var in var_dict:
         logging.info('read_mod08_m3:' + var)
-        data = hdf_read(f, var)
+        data = np.array(hdf_read(f, var), dtype=float)
+        data[data==var_dict[var]['fillvalue']] = np.nan
         var_da = xr.DataArray(
             data, coords=[lat_da, lon_da],
             dims=['lat', 'lon'])
