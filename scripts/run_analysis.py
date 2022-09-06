@@ -28,9 +28,14 @@ def fill_date_template(template_str, date_str):
 
 def read_mod08_m3(filename, var_list):
 
-    logging.info(filename)
+    logging.info('read_mod08_m3:' + filename)
     f = hdf_open(filename)
     datasets, indices = hdf_list(f)
+    lon = hdf_read(f, 'XDim')
+    lat = hdf_read(f, 'YDim')
+    for var in var_list:
+        logging.info('read_mod08_m3:' + var)
+        data = hdf_read(f, var)
     hdf_close(f)
 
 
@@ -66,9 +71,13 @@ def process(config):
                 files = glob(
                     os.path.join(os.path.expandvars(datadir), filestr))
                 logging.info(files)
+
+                obs_list = list()
+                for model_var in mapping[obs]:
+                    obs_list.append(mapping[obs][model_var])
                 for filename in files:
                     if obs == 'MOD08_M3':
-                        read_mod08_m3(filename, [])
+                        read_mod08_m3(filename, obs_list)
 
 
 if __name__ == '__main__':
