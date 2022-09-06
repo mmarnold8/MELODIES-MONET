@@ -26,7 +26,7 @@ def fill_date_template(template_str, date_str):
             'YYYY', yyyy_str).replace('MM', mm_str).replace('DD', dd_str)
 
 
-def read_hdf(filename, var_list):
+def read_mod08_m3(filename, var_list):
 
     logging.info(filename)
     f = hdf_open(filename)
@@ -67,7 +67,8 @@ def process(config):
                     os.path.join(os.path.expandvars(datadir), filestr))
                 logging.info(files)
                 for filename in files:
-                    read_hdf(filename, [])
+                    if obs == 'MOD08_M3':
+                        read_mod08_m3(filename, [])
 
 
 if __name__ == '__main__':
@@ -81,6 +82,8 @@ if __name__ == '__main__':
         help='log file (default stdout)')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')
+    parser.add_argument('--config', type=str,
+        default='../examples/analysis/carma.yaml')
     args = parser.parse_args()
 
     """
@@ -89,9 +92,7 @@ if __name__ == '__main__':
     logging_level = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(stream=args.logfile, level=logging_level)
 
-    config_file = '../examples/analysis/carma.yaml'
-
-    with open(config_file, 'r') as f:
+    with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
 
     process(config)
