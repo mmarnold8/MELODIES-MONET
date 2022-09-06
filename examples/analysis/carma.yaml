@@ -6,7 +6,7 @@ analysis:
 
 obs:
   MOD08_M3:
-    files: $HOME/Data/MOD08_M3/MOD08_M3.AYYYYDDD.061.*.hdf
+    filestr: $HOME/Data/MOD08_M3/MOD08_M3.AYYYYDDD.061.*.hdf
 
 model:
   MAM3:
@@ -20,5 +20,5 @@ model:
         - AODdnMODE3
     mapping:
       MOD08_M3:
-        AOD: AOD_550_Dark_Target_Deep_Blue_Combined_Mean_Mean
+        AOD_550: AOD_550_Dark_Target_Deep_Blue_Combined_Mean_Mean
 

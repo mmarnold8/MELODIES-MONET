@@ -35,9 +35,20 @@ def process(config):
         in zip(dates, datestrs_monthly, datestrs_monthly_jday):
 
         for model in config['model']:
+            histdir = config['model'][model]['histdir']
             filestr = config['model'][model]['filestr']
             filestr = filestr.replace('YYYY-MM', datestr)
-            print(filestr, datestr_jday)
+            files = glob(
+                os.path.join(os.path.expandvars(histdir), filestr))
+            print(files)
+
+            mapping = config['model'][model]['mapping']
+
+            for obs in mapping:
+                filestr = config['obs'][obs]['filestr']
+                filestr = filestr.replace('YYYYDDD', datestr_jday)
+                files = glob(os.path.expandvars(filestr))
+                print(files)
 
             """
             filename = ''
