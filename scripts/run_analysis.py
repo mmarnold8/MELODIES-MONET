@@ -36,7 +36,7 @@ def read_mod08_m3(filename, var_dict):
     datasets, indices = hdf_list(f)
 
     lon = hdf_read(f, 'XDim')
-    lat = hdf_read(f, 'YDim')
+    lat = np.flip(hdf_read(f, 'YDim'))
     lon_da = xr.DataArray(lon,
         attrs={'longname': 'longitude', 'units': 'deg East'})
     lat_da = xr.DataArray(lat,
@@ -45,17 +45,21 @@ def read_mod08_m3(filename, var_dict):
     for var in var_dict:
         logging.info('read_mod08_m3:' + var)
         data = np.array(hdf_read(f, var), dtype=float)
+        data = np.flip(data, axis=0)
         data[data==var_dict[var]['fillvalue']] = np.nan
         data *= var_dict[var]['scale']
         var_da = xr.DataArray(
             data, coords=[lat_da, lon_da],
-            dims=['lat', 'lon'])
+            dims=['lat', 'lon'],
+            attrs={'units': var_dict[var]['units']})
         ds_dict[var] = var_da
 
     hdf_close(f)
 
     ds = xr.Dataset(ds_dict)
     ds.to_netcdf(filename.replace('.hdf', '.nc'))
+
+    return ds
 
 
 def process(config):
@@ -98,7 +102,9 @@ def process(config):
                     obs_vars_subset[obs_var] = obs_vars[obs_var]
                 for filename in files:
                     if obs == 'MOD08_M3':
-                        read_mod08_m3(filename, obs_vars_subset)
+                        ds_obs = read_mod08_m3(filename, obs_vars_subset)
+                    elif obs == 'MOD08_M3_nc':
+                        ds_obs = xr.open_dataset(filename)
 
 
 if __name__ == '__main__':
