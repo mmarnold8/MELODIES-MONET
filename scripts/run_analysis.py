@@ -46,6 +46,7 @@ def read_mod08_m3(filename, var_dict):
         logging.info('read_mod08_m3:' + var)
         data = np.array(hdf_read(f, var), dtype=float)
         data[data==var_dict[var]['fillvalue']] = np.nan
+        data *= var_dict[var]['scale']
         var_da = xr.DataArray(
             data, coords=[lat_da, lon_da],
             dims=['lat', 'lon'])
