@@ -101,10 +101,12 @@ def process(config):
                     obs_var = mapping[obs][model_var]
                     obs_vars_subset[obs_var] = obs_vars[obs_var]
                 for filename in files:
+                    file_extension = os.path.splitext(filename)[1]
                     if obs == 'MOD08_M3':
-                        ds_obs = read_mod08_m3(filename, obs_vars_subset)
-                    elif obs == 'MOD08_M3_nc':
-                        ds_obs = xr.open_dataset(filename)
+                        if file_extension == '.hdf':
+                            ds_obs = read_mod08_m3(filename, obs_vars_subset)
+                        else:
+                            ds_obs = xr.open_dataset(filename)
 
 
 if __name__ == '__main__':
