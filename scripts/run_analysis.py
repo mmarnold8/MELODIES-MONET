@@ -11,6 +11,7 @@ import xarray as xr
 from glob import glob
 from analysis_utils import fill_date_template, find_file
 from analysis_readers import read_mod08_m3
+from analysis_plots import plot_lon_lat
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -78,6 +79,13 @@ def read_obs(config, obs_vars, date_str):
     return obs_datasets
 
 
+def plot_obs(config, obs_datasets):
+
+    for obs_name in obs_datasets:
+        for obs_varname in obs_datasets[obs_name]:
+            logging.info('plot_obs:%s,%s' % (obs_name, obs_varname))
+
+
 def process_date(config, date):
 
     logging.info(date)
@@ -86,9 +94,11 @@ def process_date(config, date):
     obs_vars = get_obs_vars(config)
     logging.info(obs_vars)
 
-    model_datasets = read_models(config, date_str)
+    # model_datasets = read_models(config, date_str)
 
     obs_datasets = read_obs(config, obs_vars, date_str)
+
+    plot_obs(config, obs_datasets)
 
 
 def process(config):
