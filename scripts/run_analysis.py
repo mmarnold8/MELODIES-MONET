@@ -50,6 +50,12 @@ def read_models(config, date_str):
 
         ds_model = xr.open_dataset(filename)
 
+        for varname in config['model'][model_name]['combine']:
+            combo_list = config['model'][model_name]['combine'][varname]
+            ds_model[varname] = ds_model[combo_list[0]]
+            for i in range(1, len(combo_list)):
+                ds_model[varname] += ds_model[combo_list[i]]
+
         model_datasets[model_name] = ds_model
 
     return model_datasets
