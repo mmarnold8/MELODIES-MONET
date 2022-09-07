@@ -37,6 +37,8 @@ def get_obs_vars(config):
 
 def read_models(config, date_str):
 
+    model_datasets = dict()
+
     for model_name in config['model']:
 
         datadir = config['model'][model_name]['datadir']
@@ -49,11 +51,16 @@ def read_models(config, date_str):
 
         filename = files[0]
         ds_model = xr.open_dataset(filename)
+        model_datasets[model_name] = ds_model
+
+    return model_datasets
 
 
-def read_obs(config, obs_vars_subset, date_str):
+def read_obs(config, obs_vars, date_str):
 
-    for obs_name in obs_vars_subset:
+    obs_datasets = dict()
+
+    for obs_name in obs_vars:
 
         datadir = config['obs'][obs_name]['datadir']
         filestr = fill_date_template(
@@ -67,9 +74,11 @@ def read_obs(config, obs_vars_subset, date_str):
 
         if obs_name == 'MOD08_M3':
             if file_extension == '.hdf':
-                ds_obs = read_mod08_m3(filename, obs_vars_subset[obs_name])
+                ds_obs = read_mod08_m3(filename, obs_vars[obs_name])
             else:
                 ds_obs = xr.open_dataset(filename)
+
+        obs_datasets[obs_name] = ds_obs
 
 
 def process_date(config, date):
@@ -80,9 +89,9 @@ def process_date(config, date):
     obs_vars = get_obs_vars(config)
     logging.info(obs_vars)
 
-    read_models(config, date_str)
+    model_datasets = read_models(config, date_str)
 
-    read_obs(config, obs_vars, date_str)
+    obs_datasets = read_obs(config, obs_vars, date_str)
 
 
 def process(config):
