@@ -9,7 +9,8 @@ import cartopy.feature as cfeature
 
 
 def plot_lon_lat(plotfile, plotname,
-    plot_params, field, symmetric=False):
+    plot_params, field,
+    symmetric=False, swap_lon=False):
 
     logging.info(plotfile)
 
@@ -20,23 +21,34 @@ def plot_lon_lat(plotfile, plotname,
         facecolor='none')
 
     ax = plt.axes(projection=ccrs.PlateCarree())
-    ax.set_extent([-180, -180, -80, 80])
 
-    lon_mesh, lat_mesh \
-        = np.meshgrid(field.lon.values, field.lat.values)
+    lon_values = field.lon.values
+    lat_values = field.lat.values
 
     levels = np.linspace(
         plot_params['range_min'], plot_params['range_max'],
         plot_params['nlevel'], endpoint=True)
 
-    extend_option = 'both' if symmetric else 'max' 
-    # cmap_option = plt.cm.gist_rainbow if symmetric else plt.cm.gist_ncar
-    cmap_option = plt.cm.gist_ncar
-
     if field.ndim == 3: 
         field_values = np.clip(field.values[0,:,:], levels[0], levels[-1])
     else:
         field_values = np.clip(field.values[:,:], levels[0], levels[-1])
+
+    if swap_lon:
+        nlon = len(lon_values)
+        lon_swap = lon_values
+        lon_values[0:nlon//2] = lon_swap[nlon//2:nlon]
+        lon_values[nlon//2:nlon] = lon_swap[0:nlon//2]
+        field_swap = field_values
+        field_values[:,0:nlon//2] = field_swap[:,nlon//2:nlon]
+        field_values[:,nlon//2:nlon] = field_swap[:,0:nlon//2]
+
+    lon_mesh, lat_mesh \
+        = np.meshgrid(lon_values, lat_values)
+
+    extend_option = 'both' if symmetric else 'max' 
+    # cmap_option = plt.cm.gist_rainbow if symmetric else plt.cm.gist_ncar
+    cmap_option = plt.cm.gist_ncar
 
     cp = ax.contourf(lon_mesh, lat_mesh, field_values,
         levels, cmap=cmap_option, extend=extend_option,

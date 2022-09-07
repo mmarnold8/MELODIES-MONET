@@ -86,7 +86,7 @@ def read_obs(config, obs_vars, date_str):
     return obs_datasets
 
 
-def plot_datasets(config, date_str, data_vars, datasets):
+def plot_datasets(config, date_str, data_vars, datasets, swap_lon=False):
 
     plotdir = os.path.expandvars(config['analysis']['output_dir'])
 
@@ -101,7 +101,8 @@ def plot_datasets(config, date_str, data_vars, datasets):
             plotfile = plotname.replace('  ', '_').replace(' ', '_')
 
             ds = datasets[name][varname]
-            plot_lon_lat(plotfile, plotname, plot_params, ds)
+            plot_lon_lat(plotfile, plotname, plot_params,
+                ds, swap_lon=swap_lon)
 
 
 def process_date(config, date):
@@ -122,7 +123,8 @@ def process_date(config, date):
 
     plot_datasets(config, date_str, obs_vars, obs_datasets)
 
-    plot_datasets(config, date_str, model_vars, model_datasets)
+    plot_datasets(config, date_str, model_vars,
+        model_datasets, swap_lon=False)
 
 
 def process(config):
