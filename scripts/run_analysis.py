@@ -86,12 +86,14 @@ def plot_obs(config, date_str, obs_vars, obs_datasets):
 
     for obs_name in obs_datasets:
         for obs_varname in obs_datasets[obs_name]:
+
             logging.info('plot_obs:%s,%s' % (obs_name, obs_varname))
             ds_obs = obs_datasets[obs_name][obs_varname]
+
             plot_params = obs_vars[obs_name][obs_varname]['plot_params']
             plot_params['outdir'] = plotdir
             plotname = fill_date_template(plot_params['name'], date_str)
-            plotfile = obs_name + '_' + obs_varname + '_' + date_str
+            plotfile = plotname.replace('  ', '_').replace(' ', '_')
 
             plot_lon_lat(plotfile, plotname, plot_params, ds_obs)
 
@@ -99,7 +101,7 @@ def plot_obs(config, date_str, obs_vars, obs_datasets):
 def process_date(config, date):
 
     logging.info(date)
-    date_str = date.strftime('%Y-%m-%d-%j')
+    date_str = date.strftime('%Y-%m-%b-%d-%j')
 
     obs_vars = get_obs_vars(config)
     logging.info(obs_vars)

@@ -16,10 +16,10 @@ obs:
         scale: 0.001
         units: none
         plot_params:
-          name: 'Terra MODIS AOD 550 nm  YYYY MM'
+          name: 'Terra MODIS AOD 550 nm  YYYY M_ABBR'
           range_min: 0.0
-          range_max: 1.0
-          nlevel: 11
+          range_max: 0.7
+          nlevel: 15
 
 model:
   MAM3:

@@ -19,7 +19,6 @@ def plot_lon_lat(plotfile, plotname,
         scale='50m',
         facecolor='none')
 
-    # ax = plt.axes(projection=ccrs.Robinson())
     ax = plt.axes(projection=ccrs.PlateCarree())
     ax.set_extent([-180, -180, -80, 80])
 
@@ -41,15 +40,14 @@ def plot_lon_lat(plotfile, plotname,
 
     # ax.gridlines()
     ax.coastlines()
-    ax.add_feature(cfeature.BORDERS)
-    ax.add_feature(states_provinces)
+    # ax.add_feature(cfeature.BORDERS)
+    # ax.add_feature(states_provinces)
 
     plt.title(plotname)
-    cbar = plt.colorbar(cp,
-        orientation='horizontal', pad=0.01)
+    cbar = plt.colorbar(cp, orientation='horizontal', pad=0.05)
 
     plt.savefig(os.path.join(plot_params['outdir'], plotfile) + '.png',
-        bbox_inches='tight', dpi=300)
+        bbox_inches='tight', dpi=1000)
     plt.savefig(os.path.join(plot_params['outdir'], plotfile) + '.pdf',
         bbox_inches='tight')
     plt.clf()
