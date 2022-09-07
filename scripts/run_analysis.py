@@ -85,7 +85,7 @@ def plot_datasets(config, date_str, data_vars, datasets):
     plotdir = os.path.expandvars(config['analysis']['output_dir'])
 
     for name in datasets:
-        for varname in datasets[name]:
+        for varname in data_vars[name]:
 
             logging.info('plot_datasets:%s,%s' % (name, varname))
 
@@ -114,7 +114,9 @@ def process_date(config, date):
 
     model_datasets = read_models(config, date_str)
 
-    # plot_datasets(config, date_str, obs_vars, obs_datasets)
+    plot_datasets(config, date_str, obs_vars, obs_datasets)
+
+    plot_datasets(config, date_str, model_vars, model_datasets)
 
 
 def process(config):

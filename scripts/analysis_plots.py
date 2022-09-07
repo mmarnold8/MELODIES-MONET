@@ -33,8 +33,12 @@ def plot_lon_lat(plotfile, plotname,
     # cmap_option = plt.cm.gist_rainbow if symmetric else plt.cm.gist_ncar
     cmap_option = plt.cm.gist_ncar
 
-    cp = ax.contourf(lon_mesh, lat_mesh,
-        np.clip(field.values, levels[0], levels[-1]),
+    if field.ndim == 3: 
+        field_values = np.clip(field.values[0,:,:], levels[0], levels[-1])
+    else:
+        field_values = np.clip(field.values[:,:], levels[0], levels[-1])
+
+    cp = ax.contourf(lon_mesh, lat_mesh, field_values,
         levels, cmap=cmap_option, extend=extend_option,
         transform=ccrs.PlateCarree())
 
