@@ -38,11 +38,17 @@ model:
         plot_params:
           name: 'MAM3 Aitken Mode AOD 550 nm  YYYY M_ABBR'
           range_min: 0.0
-          range_max: 0.7
-          nlevel: 15
+          range_max: 0.1
+          nlevel: 11
       AODdnMODE3:
         plot_params:
           name: 'MAM3 Coarse Mode AOD 550 nm  YYYY M_ABBR'
+          range_min: 0.0
+          range_max: 0.7
+          nlevel: 15
+      AOD_550:
+        plot_params:
+          name: 'MAM3 AOD 550 nm  YYYY M_ABBR'
           range_min: 0.0
           range_max: 0.7
           nlevel: 15
