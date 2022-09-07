@@ -14,7 +14,11 @@ obs:
         fillvalue: -9999
         scale: 0.01
         units: none
-        plot_name: AOD_550
+        plot_params:
+          name: 'Terra MODIS AOD 550 nm'
+          range_min: 0.0
+          range_max: 0.7
+          nlevel: 8
 
 model:
   MAM3:

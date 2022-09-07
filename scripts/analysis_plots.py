@@ -8,9 +8,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
 
-def plot_lon_lat(plotdir, plotfile, plottitle,
-    field_min, field_max, nlevel,
-    field, symmetric=False):
+def plot_lon_lat(plotfile, plot_params, field, symmetric=False):
 
     logging.info(plotfile)
 
@@ -27,8 +25,9 @@ def plot_lon_lat(plotdir, plotfile, plottitle,
     lon_mesh, lat_mesh \
         = np.meshgrid(field.lon.values, field.lat.values)
 
-    levels = np.linspace(field_min, field_max,
-        nlevel, endpoint=True)
+    levels = np.linspace(
+        plot_params['range_min'], plot_params['range_max'],
+        plot_params['nlevel'], endpoint=True)
     logging.info(levels)
 
     extend_option = 'both' if symmetric else 'max' 
@@ -44,13 +43,13 @@ def plot_lon_lat(plotdir, plotfile, plottitle,
     ax.add_feature(cfeature.BORDERS)
     ax.add_feature(states_provinces)
 
-    plt.title(plottitle)
+    plt.title(plot_params['name'])
     cbar = plt.colorbar(cp,
         orientation='horizontal', pad=0.01)
 
-    plt.savefig(os.path.join(plotdir, plotfile) + '.png',
+    plt.savefig(os.path.join(plot_params['outdir'], plotfile) + '.png',
         bbox_inches='tight', dpi=300)
-    plt.savefig(os.path.join(plotdir, plotfile) + '.pdf',
+    plt.savefig(os.path.join(plot_params['outdir'], plotfile) + '.pdf',
         bbox_inches='tight')
     plt.clf()
 
