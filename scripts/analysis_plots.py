@@ -10,7 +10,7 @@ import cartopy.feature as cfeature
 
 def plot_lon_lat(plotdir, plotfile, plottitle,
     field_min, field_max, nlevel,
-    lon, lat, field, symmetric=False):
+    field, symmetric=False):
 
     logging.info(plotfile)
 
@@ -22,9 +22,10 @@ def plot_lon_lat(plotdir, plotfile, plottitle,
 
     # ax = plt.axes(projection=ccrs.Robinson())
     ax = plt.axes(projection=ccrs.PlateCarree())
-    ax.set_extent([-140, -100, 30, 50])
+    ax.set_extent([-180, -180, -80, 80])
 
-    lon_mesh, lat_mesh = np.meshgrid(lon, lat)
+    lon_mesh, lat_mesh \
+        = np.meshgrid(field.lon.values, field.lat.values)
 
     levels = np.linspace(field_min, field_max,
         nlevel, endpoint=True)
@@ -34,7 +35,7 @@ def plot_lon_lat(plotdir, plotfile, plottitle,
     # cmap_option = plt.cm.gist_rainbow if symmetric else plt.cm.gist_ncar
     cmap_option = plt.cm.gist_ncar
 
-    cp = ax.contourf(lon_mesh, lat_mesh, field, levels,
+    cp = ax.contourf(lon_mesh, lat_mesh, field.values, levels,
         cmap=cmap_option, extend=extend_option,
         transform=ccrs.PlateCarree())
 
