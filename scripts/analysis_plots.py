@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+from cartopy.util import add_cyclic_point
 
 
 def plot_lon_lat(plotfile, plotname,
-    plot_params, field,
-    symmetric=False, swap_lon=False):
+    plot_params, field, symmetric=False):
 
     logging.info(plotfile)
 
@@ -34,14 +34,8 @@ def plot_lon_lat(plotfile, plotname,
     else:
         field_values = np.clip(field.values[:,:], levels[0], levels[-1])
 
-    if swap_lon:
-        nlon = len(lon_values)
-        lon_swap = lon_values
-        lon_values[0:nlon//2] = lon_swap[nlon//2:nlon]
-        lon_values[nlon//2:nlon] = lon_swap[0:nlon//2]
-        field_swap = field_values
-        field_values[:,0:nlon//2] = field_swap[:,nlon//2:nlon]
-        field_values[:,nlon//2:nlon] = field_swap[:,0:nlon//2]
+    field_values, lon_values \
+        = add_cyclic_point(field_values, coord=lon_values)
 
     lon_mesh, lat_mesh \
         = np.meshgrid(lon_values, lat_values)
