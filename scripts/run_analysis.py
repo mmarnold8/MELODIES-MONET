@@ -84,6 +84,7 @@ def plot_obs(config, obs_datasets):
     for obs_name in obs_datasets:
         for obs_varname in obs_datasets[obs_name]:
             logging.info('plot_obs:%s,%s' % (obs_name, obs_varname))
+            ds_obs = obs_datasets[obs_name][obs_varname]
 
 
 def process_date(config, date):
