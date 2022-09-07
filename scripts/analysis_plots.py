@@ -8,7 +8,8 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
 
-def plot_lon_lat(plotfile, plot_params, field, symmetric=False):
+def plot_lon_lat(plotfile, plotname,
+    plot_params, field, symmetric=False):
 
     logging.info(plotfile)
 
@@ -33,16 +34,17 @@ def plot_lon_lat(plotfile, plot_params, field, symmetric=False):
     # cmap_option = plt.cm.gist_rainbow if symmetric else plt.cm.gist_ncar
     cmap_option = plt.cm.gist_ncar
 
-    cp = ax.contourf(lon_mesh, lat_mesh, field.values, levels,
-        cmap=cmap_option, extend=extend_option,
+    cp = ax.contourf(lon_mesh, lat_mesh,
+        np.clip(field.values, levels[0], levels[-1]),
+        levels, cmap=cmap_option, extend=extend_option,
         transform=ccrs.PlateCarree())
 
-    ax.gridlines()
+    # ax.gridlines()
     ax.coastlines()
     ax.add_feature(cfeature.BORDERS)
     ax.add_feature(states_provinces)
 
-    plt.title(plot_params['name'])
+    plt.title(plotname)
     cbar = plt.colorbar(cp,
         orientation='horizontal', pad=0.01)
 

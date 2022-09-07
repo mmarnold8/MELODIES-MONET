@@ -90,11 +90,10 @@ def plot_obs(config, date_str, obs_vars, obs_datasets):
             ds_obs = obs_datasets[obs_name][obs_varname]
             plot_params = obs_vars[obs_name][obs_varname]['plot_params']
             plot_params['outdir'] = plotdir
-            plot_params['name'] \
-                = fill_date_template(plot_params['name'], date_str)
+            plotname = fill_date_template(plot_params['name'], date_str)
             plotfile = obs_name + '_' + obs_varname + '_' + date_str
 
-            plot_lon_lat(plotfile, plot_params, ds_obs)
+            plot_lon_lat(plotfile, plotname, plot_params, ds_obs)
 
 
 def process_date(config, date):
