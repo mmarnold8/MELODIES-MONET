@@ -1,8 +1,12 @@
+import logging
+import numpy as np
+import xarray as xr
+
 import monetio
 from monetio.sat.hdfio import hdf_open, hdf_close, hdf_list, hdf_read
 
 
-def read_mod08_m3(filename, var_dict):
+def read_gridded_eos(filename, var_dict):
 
     ds_dict = dict()
 

@@ -10,7 +10,7 @@ import pandas as pd
 import xarray as xr
 from glob import glob
 from analysis_utils import fill_date_template, find_file
-from analysis_readers import read_mod08_m3
+from analysis_readers import read_gridded_eos
 from analysis_plots import plot_lon_lat
 import warnings
 warnings.filterwarnings('ignore')
@@ -61,6 +61,7 @@ def read_obs(config, obs_vars, date_str):
 
     for obs_name in obs_vars:
 
+        data_format = config['obs'][obs_name]['data_format']
         datadir = config['obs'][obs_name]['datadir']
         filestr = fill_date_template(
             config['obs'][obs_name]['filestr'], date_str)
@@ -68,9 +69,9 @@ def read_obs(config, obs_vars, date_str):
 
         file_extension = os.path.splitext(filename)[1]
 
-        if obs_name == 'MOD08_M3':
+        if data_format == 'gridded_eos':
             if file_extension == '.hdf':
-                ds_obs = read_mod08_m3(filename, obs_vars[obs_name])
+                ds_obs = read_gridded_eos(filename, obs_vars[obs_name])
             else:
                 ds_obs = xr.open_dataset(filename)
 
@@ -89,6 +90,8 @@ def plot_obs(config, date_str, obs_vars, obs_datasets):
             ds_obs = obs_datasets[obs_name][obs_varname]
             plot_params = obs_vars[obs_name][obs_varname]['plot_params']
             plot_params['outdir'] = plotdir
+            plot_params['name'] \
+                = fill_date_template(plot_params['name'], date_str)
             plotfile = obs_name + '_' + obs_varname + '_' + date_str
 
             plot_lon_lat(plotfile, plot_params, ds_obs)

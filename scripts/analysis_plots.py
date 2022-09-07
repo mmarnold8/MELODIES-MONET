@@ -28,7 +28,6 @@ def plot_lon_lat(plotfile, plot_params, field, symmetric=False):
     levels = np.linspace(
         plot_params['range_min'], plot_params['range_max'],
         plot_params['nlevel'], endpoint=True)
-    logging.info(levels)
 
     extend_option = 'both' if symmetric else 'max' 
     # cmap_option = plt.cm.gist_rainbow if symmetric else plt.cm.gist_ncar
