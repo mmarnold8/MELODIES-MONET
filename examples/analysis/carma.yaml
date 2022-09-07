@@ -8,8 +8,8 @@ obs:
   MOD08_M3:
     data_format: gridded_eos
     datadir: $HOME/Data/MOD08_M3
-    filestr: MOD08_M3.AYYYYDDD.061.*.hdf
-    # filestr: MOD08_M3.AYYYYDDD.061.*.nc
+    # filestr: MOD08_M3.AYYYYDDD.061.*.hdf
+    filestr: MOD08_M3.AYYYYDDD.061.*.nc
     variables:
       AOD_550_Dark_Target_Deep_Blue_Combined_Mean_Mean:
         fillvalue: -9999
@@ -24,8 +24,28 @@ obs:
 model:
   MAM3:
     # datadir: /glade/campaign/acom/acom-climate/tilmes/CARMA/...
+    data_format: cesm
     datadir: $HOME/Data/CARMA/FCnudged_f09.mam.mar27.2000_2021.001/atm/hist
     filestr: FCnudged_f09.mam.mar27.2000_2021.001.cam.h0.YYYY-MM.nc
+    variables:
+      AODdnMODE1:
+        plot_params:
+          name: 'MAM3 Accumulation Mode AOD 550 nm  YYYY M_ABBR'
+          range_min: 0.0
+          range_max: 0.7
+          nlevel: 15
+      AODdnMODE2:
+        plot_params:
+          name: 'MAM3 Aitken Mode AOD 550 nm  YYYY M_ABBR'
+          range_min: 0.0
+          range_max: 0.7
+          nlevel: 15
+      AODdnMODE3:
+        plot_params:
+          name: 'MAM3 Coarse Mode AOD 550 nm  YYYY M_ABBR'
+          range_min: 0.0
+          range_max: 0.7
+          nlevel: 15
     combine:
       AOD_550:
         - AODdnMODE1

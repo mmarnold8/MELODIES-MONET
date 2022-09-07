@@ -106,11 +106,15 @@ def process_date(config, date):
     obs_vars = get_obs_vars(config)
     logging.info(obs_vars)
 
-    # model_datasets = read_models(config, date_str)
+    model_vars = {model_name: config['model'][model_name]['variables']
+        for model_name in config['model']}
+    logging.info(model_vars)
 
     obs_datasets = read_obs(config, obs_vars, date_str)
 
-    plot_datasets(config, date_str, obs_vars, obs_datasets)
+    model_datasets = read_models(config, date_str)
+
+    # plot_datasets(config, date_str, obs_vars, obs_datasets)
 
 
 def process(config):
