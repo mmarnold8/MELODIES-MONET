@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from glob import glob
-from analysis_utils import fill_date_template
+from analysis_utils import fill_date_template, find_file
 from analysis_readers import read_mod08_m3
 import warnings
 warnings.filterwarnings('ignore')
@@ -45,12 +45,10 @@ def read_models(config, date_str):
         filestr = config['model'][model_name]['filestr']
         filestr = fill_date_template(
             config['model'][model_name]['filestr'], date_str)
-        files = glob(
-            os.path.join(os.path.expandvars(datadir), filestr))
-        logging.info(files)
+        filename = find_file(datadir, filestr)
 
-        filename = files[0]
         ds_model = xr.open_dataset(filename)
+
         model_datasets[model_name] = ds_model
 
     return model_datasets
@@ -65,11 +63,8 @@ def read_obs(config, obs_vars, date_str):
         datadir = config['obs'][obs_name]['datadir']
         filestr = fill_date_template(
             config['obs'][obs_name]['filestr'], date_str)
-        files = glob(
-            os.path.join(os.path.expandvars(datadir), filestr))
-        logging.info(files)
+        filename = find_file(datadir, filestr)
 
-        filename = files[0]
         file_extension = os.path.splitext(filename)[1]
 
         if obs_name == 'MOD08_M3':
@@ -79,6 +74,8 @@ def read_obs(config, obs_vars, date_str):
                 ds_obs = xr.open_dataset(filename)
 
         obs_datasets[obs_name] = ds_obs
+
+    return obs_datasets
 
 
 def process_date(config, date):
